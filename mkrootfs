@@ -1,0 +1,48 @@
+#!/bin/bash
+
+CWD=$(pwd)
+BUSYBOX=busybox
+
+TMPDIR=$(mktemp -d .tmp.XXXXXXXX)
+
+cd $TMPDIR
+
+mkdir -p dev etc/init.d mnt proc root sys tmp
+chmod a+rwxt tmp
+
+cp -rf ${CWD}/${BUSYBOX}/_install/* ./
+
+cat << EOF > etc/profile
+echo
+echo "Let's hack the kernel!"
+echo
+EOF
+
+cat << EOF > etc/fstab
+proc  /proc  proc  defaults  0  0
+sysfs  /sys  sysfs defaults  0  0
+tmpfs  /tmp  tmpfs defaults  0  0
+EOF
+
+cat << EOF > etc/inittab
+::sysinit:/etc/init.d/rcS
+::respawn:-/bin/sh
+tty2::askfirst:-/bin/sh
+::ctrlaltdel:/bin/umount -a -r
+EOF
+
+cat << EOF > etc/init.d/rcS
+#!bin/sh
+/bin/mount -a
+/sbin/mdev -s
+EOF
+
+chmod 755 etc/init.d/rcS
+
+find ./ | cpio -o -H newc | gzip > $CWD/rootfs.img
+
+cd $CWD
+
+rm -rf $TMPDIR
+
+exit 0

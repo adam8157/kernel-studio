@@ -1,0 +1,21 @@
+#!/bin/bash
+
+LINUX=linux
+BUSYBOX=busybox
+
+[ -d $LINUX ] || git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $LINUX
+
+make -C $LINUX defconfig
+
+${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_EXPERIMENTAL
+${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_DEBUG_INFO
+${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB
+${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
+${LINUX}/scripts/config --file ${LINUX}/.config --disable CONFIG_DEBUG_RODATA
+
+[ -d $BUSYBOX ] || git://git.busybox.net/busybox $BUSYBOX
+
+make -C $BUSYBOX defconfig
+
+${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_STATIC
+${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_INSTALL_NO_USR
