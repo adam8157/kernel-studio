@@ -1,11 +1,15 @@
-# kernel-dev
+# kernel-de
 
 Setup the kernel developing environment automatically.
 
+## warning
+
+Before everything, do read and get through each file.
+
 ## requirements
 
- * gdb
  * gcc
+ * gdb
  * make
  * QEMU
 
@@ -20,7 +24,3 @@ Setup the kernel developing environment automatically.
 ## run debugging system
 
 	make debug
-
-## warning
-
-Before everything, do read and get through each file.
