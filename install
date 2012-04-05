@@ -3,7 +3,7 @@
 LINUX=linux
 BUSYBOX=busybox
 
-[ -d $LINUX ] || git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $LINUX
+[ -d $LINUX ] || git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $LINUX
 
 make -C $LINUX defconfig
 
@@ -13,7 +13,7 @@ ${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB
 ${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
 ${LINUX}/scripts/config --file ${LINUX}/.config --disable CONFIG_DEBUG_RODATA
 
-[ -d $BUSYBOX ] || git://git.busybox.net/busybox $BUSYBOX
+[ -d $BUSYBOX ] || git clone git://git.busybox.net/busybox $BUSYBOX
 
 make -C $BUSYBOX defconfig
 
