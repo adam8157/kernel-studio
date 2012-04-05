@@ -8,11 +8,11 @@ debug: kernel.img rootfs.img
 install linux/.config busybox/.config:
 	./install
 
-kernel.img: linux/.config linux/arch/x86/boot/bzImage
+kernel.img: linux/.config
 	make -C linux bzImage -j4
 	cp linux/arch/x86/boot/bzImage kernel.img
 
-rootfs.img: busybox/.config busybox/_install/bin/busybox
+rootfs.img: busybox/.config
 	make -C busybox install -j4
 	./mkrootfs
 
