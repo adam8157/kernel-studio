@@ -1,6 +1,6 @@
-# kernel-de
+# kernel-studio
 
-Setup the kernel developing environment automatically.
+Kernel developing and debugging environment.
 
 ## warning
 
