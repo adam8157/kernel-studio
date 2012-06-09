@@ -1,8 +1,8 @@
 run: kernel.img rootfs.img
-	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init" -initrd rootfs.img
+	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init" -initrd rootfs.img -net nic -net user
 
 debug: kernel.img rootfs.img
-	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init kgdboc=ttyS0,115200 kgdbwait" -initrd rootfs.img -serial tcp::1234,server &
+	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init kgdboc=ttyS0,115200 kgdbwait" -initrd rootfs.img -net nic -net user -serial tcp::1234,server &
 	gdb linux/vmlinux
 
 install linux/.config busybox/.config:

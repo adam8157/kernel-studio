@@ -12,6 +12,9 @@ chmod a+rwxt tmp
 
 cp -rf ${CWD}/${BUSYBOX}/_install/* ./
 
+mkdir -p usr/share/udhcpc
+cp -rf ${CWD}/${BUSYBOX}/examples/udhcp/simple.script ./usr/share/udhcpc/default.script
+
 cat << EOF > etc/profile
 echo
 echo "Let's hack the kernel!"
