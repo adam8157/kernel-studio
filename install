@@ -19,3 +19,5 @@ make -C $BUSYBOX defconfig
 
 ${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_STATIC
 ${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_INSTALL_NO_USR
+${LINUX}/scripts/config --file ${BUSYBOX}/.config --disable CONFIG_INETD
+${LINUX}/scripts/config --file ${BUSYBOX}/.config --disable CONFIG_FEATURE_MOUNT_NFS
