@@ -12,6 +12,7 @@ Before everything, do read and get through each file.
  * gdb
  * make
  * QEMU
+ * C libraries(static)
 
 ## install
 
@@ -21,6 +22,6 @@ Before everything, do read and get through each file.
 
 	make run
 
-## run debugging system
+## run debugging system(kgdb)
 
 	make debug
