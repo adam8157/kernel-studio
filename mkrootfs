@@ -38,6 +38,8 @@ cat << EOF > etc/init.d/rcS
 #!bin/sh
 /bin/mount -a
 /sbin/mdev -s
+/sbin/ifconfig eth0 up >/dev/null 2>&1 \
+&& /sbin/udhcpc eth0 >/dev/null 2>&1
 EOF
 
 chmod 755 etc/init.d/rcS
