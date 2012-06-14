@@ -13,6 +13,9 @@ ${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB
 ${LINUX}/scripts/config --file ${LINUX}/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
 ${LINUX}/scripts/config --file ${LINUX}/.config --disable CONFIG_DEBUG_RODATA
 
+yes "" | make -C $LINUX oldconfig
+
+
 [ -d $BUSYBOX ] || git clone git://git.busybox.net/busybox $BUSYBOX
 
 make -C $BUSYBOX defconfig
@@ -21,3 +24,5 @@ ${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_STATIC
 ${LINUX}/scripts/config --file ${BUSYBOX}/.config --enable CONFIG_INSTALL_NO_USR
 ${LINUX}/scripts/config --file ${BUSYBOX}/.config --disable CONFIG_INETD
 ${LINUX}/scripts/config --file ${BUSYBOX}/.config --disable CONFIG_FEATURE_MOUNT_NFS
+
+yes "" | make -C $BUSYBOX oldconfig
