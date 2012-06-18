@@ -1,9 +1,25 @@
 #!/bin/bash
 
+# source directories
 LINUX=linux
 BUSYBOX=busybox
 
-[ -d $LINUX ] || git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $LINUX
+# setting up linux source tree
+
+if [ ! -d $LINUX ]
+then
+	read -p "Linux source doesn't exist, git clone it from kernel.org? [y/N] " REPLY
+
+	case $REPLY in
+		y | Y)
+			git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $LINUX
+			;;
+		*)
+			echo "So, please prepare linux source(in a directory named $LINUX) by yourself."
+			exit 1
+			;;
+	esac
+fi
 
 make -C $LINUX defconfig
 
@@ -15,8 +31,23 @@ ${LINUX}/scripts/config --file ${LINUX}/.config --disable CONFIG_DEBUG_RODATA
 
 yes "" | make -C $LINUX oldconfig
 
+# setting up busybox source tree
 
-[ -d $BUSYBOX ] || git clone git://git.busybox.net/busybox $BUSYBOX
+if [ ! -d $BUSYBOX ]
+then
+	read -p "Busybox source doesn't exist, git clone it from busybox.net? [y/N] " REPLY
+
+	case $REPLY in
+		y | Y)
+			git clone git://git.busybox.net/busybox $BUSYBOX
+			;;
+		*)
+			echo "So, please prepare busybox source(in a directory named $BUSYBOX) by yourself."
+			exit 1
+			;;
+	esac
+fi
+
 
 make -C $BUSYBOX defconfig
 
