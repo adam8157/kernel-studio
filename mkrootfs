@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ "$#" = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
+
 CWD=$(pwd)
 BUSYBOX=busybox
 
@@ -44,7 +46,7 @@ EOF
 
 chmod 755 etc/init.d/rcS
 
-find ./ | cpio -o -H newc | gzip > $CWD/rootfs.img
+find ./ | cpio -o -H newc | gzip > ${CWD}/${1}
 
 cd $CWD
 

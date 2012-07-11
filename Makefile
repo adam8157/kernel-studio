@@ -10,10 +10,10 @@ install linux/.config busybox/.config:
 
 kernel.img: linux/.config
 	make -C linux bzImage -j4
-	cp linux/arch/x86/boot/bzImage kernel.img
+	cp linux/arch/x86/boot/bzImage $@
 
 rootfs.img: busybox/.config
 	make -C busybox install -j4
-	./mkrootfs
+	./mkrootfs $@
 
 .PHONY: run debug install
