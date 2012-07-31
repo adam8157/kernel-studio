@@ -5,6 +5,9 @@ debug: kernel.img rootfs.img
 	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init kgdboc=ttyS0,115200 kgdbwait" -initrd rootfs.img -net nic,model=e1000 -net user -serial tcp::1234,server &
 	TMPFILE=$$(mktemp) && echo "target remote localhost:1234" > $$TMPFILE && gdb -x $$TMPFILE linux/vmlinux
 
+touch: linux/.config busybox/.config
+	touch $^
+
 install linux/.config busybox/.config:
 	./install
 
@@ -16,4 +19,4 @@ rootfs.img: busybox/.config
 	make -C busybox install -j4
 	./mkrootfs $@
 
-.PHONY: run debug install
+.PHONY: run debug touch install
