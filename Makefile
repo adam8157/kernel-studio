@@ -6,6 +6,8 @@ debug: kernel.img rootfs.img
 	TMPFILE=$$(mktemp) && echo "target remote localhost:1234" > $$TMPFILE && gdb -x $$TMPFILE linux/vmlinux
 
 touch: linux/.config busybox/.config
+	yes "" | make -C linux oldconfig
+	yes "" | make -C busybox oldconfig
 	touch $^
 
 install linux/.config busybox/.config:
