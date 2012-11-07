@@ -1,24 +1,31 @@
+LINUX := linux
+BUSYBOX := busybox
+
+default: kernel.img rootfs.img
+
 run: kernel.img rootfs.img
 	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init" -initrd rootfs.img -net nic,model=e1000 -net user
 
 debug: kernel.img rootfs.img
 	qemu-system-x86_64 -kernel kernel.img -append "root=/dev/ram rdinit=/sbin/init kgdboc=ttyS0,115200 kgdbwait" -initrd rootfs.img -net nic,model=e1000 -net user -serial tcp::1234,server &
-	TMPFILE=$$(mktemp) && echo "target remote localhost:1234" > $$TMPFILE && gdb -x $$TMPFILE linux/vmlinux
+	TMPFILE=$$(mktemp) && echo "target remote localhost:1234" > $$TMPFILE && gdb -x $$TMPFILE $(LINUX)/vmlinux
 
-touch: linux/.config busybox/.config
-	yes "" | make -C linux oldconfig
-	yes "" | make -C busybox oldconfig
-	touch $^
+clean:
+	rm -f kernel.img rootfs.img
 
-install linux/.config busybox/.config:
-	./install
+update: $(LINUX)/.config $(BUSYBOX)/.config
+	yes "" | make -C $(LINUX) oldconfig
+	yes "" | make -C $(BUSYBOX) oldconfig
 
-kernel.img: linux/.config
-	make -C linux bzImage -j4
-	cp linux/arch/x86/boot/bzImage $@
+kernel.img: $(LINUX)/.config
+	make -C $(LINUX) bzImage -j4
+	cp $(LINUX)/arch/x86/boot/bzImage $@
 
-rootfs.img: busybox/.config
-	make -C busybox install -j4
+rootfs.img: $(BUSYBOX)/.config
+	make -C $(BUSYBOX) install -j4
 	./mkrootfs $@
 
-.PHONY: run debug touch install
+install $(LINUX)/.config $(BUSYBOX)/.config:
+	./install
+
+.PHONY: default run debug clean update install
